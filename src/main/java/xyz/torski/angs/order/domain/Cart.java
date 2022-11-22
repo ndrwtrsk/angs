@@ -10,6 +10,8 @@ public class Cart {
 
     @Getter
     private final String id = UUID.randomUUID().toString();
+
+    @Getter
     private final List<String> products = new ArrayList<>();
 
     public Cart addToCart(AddToCartRequest request) {
@@ -19,5 +21,9 @@ public class Cart {
 
     public int cartSize() {
         return products.size();
+    }
+
+    public CalculatedCart calculateCart(OrderProductStockRepository repo) {
+        return new CalculatedCart(this, repo);
     }
 }

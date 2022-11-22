@@ -8,6 +8,7 @@ import java.util.Optional;
 public class OrderService {
 
     private final CartRepository repo;
+    private final OrderProductStockRepository orderProductStockRepository;
 
     public Cart addToCart(AddToCartRequest request) {
         var cart = retrieveCart(request);
@@ -27,5 +28,10 @@ public class OrderService {
 
     public Optional<Cart> findCart(String cartId){
         return repo.findById(cartId);
+    }
+
+    public Optional<CalculatedCart> calculateCart(String cartId) {
+        return findCart(cartId)
+                .map(cart -> cart.calculateCart(orderProductStockRepository));
     }
 }
