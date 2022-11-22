@@ -16,4 +16,8 @@ public class Cart {
         products.add(request.getProductStockId());
         return this;
     }
+
+    public int cartSize() {
+        return products.size();
+    }
 }
