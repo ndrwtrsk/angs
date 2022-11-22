@@ -1,5 +1,7 @@
 package xyz.torski.angs.search.infra;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,8 @@ import java.util.List;
     to boost search speed, filtering speed etc. Furthermore, whatever frontend there might be,
     it should integrate directly with search engine, not this service.
  */
-public class ProductStockIndex {
+@Component
+public class ProductStockIndex { // todo think about renaming?
 
     private final List<IndexableProductStock> stock = new ArrayList<>();
 

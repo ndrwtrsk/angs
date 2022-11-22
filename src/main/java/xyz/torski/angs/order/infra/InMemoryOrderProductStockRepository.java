@@ -1,5 +1,6 @@
 package xyz.torski.angs.order.infra;
 
+import org.springframework.stereotype.Component;
 import xyz.torski.angs.order.domain.OrderProductStock;
 import xyz.torski.angs.order.domain.OrderProductStockRepository;
 
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 public class InMemoryOrderProductStockRepository implements OrderProductStockRepository {
     private final Map<String, OrderProductStock> repo = new HashMap<>();
 

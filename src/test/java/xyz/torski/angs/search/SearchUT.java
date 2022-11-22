@@ -2,7 +2,7 @@ package xyz.torski.angs.search;
 
 import org.junit.jupiter.api.Test;
 import xyz.torski.angs.search.infra.ProductStockIndex;
-import xyz.torski.angs.search.infra.PublishedStockListener;
+import xyz.torski.angs.search.infra.SearchPublishedStockListener;
 import xyz.torski.angs.stock.domain.ProductStockPublishedEvent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SearchUT {
 
     private final ProductStockIndex index = new ProductStockIndex();
-    private final PublishedStockListener listener = new PublishedStockListener(index);
+    private final SearchPublishedStockListener listener = new SearchPublishedStockListener(index);
 
     @Test
     public void acceptingStockPublishedEventShouldIndexTheStock() {
