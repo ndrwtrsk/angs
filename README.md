@@ -12,5 +12,7 @@
 ## Architecture Decision Record Log
 
 ### 1. Use Spring Boot/Java 17 as platform for application.
-### 2. Postpone any data layer integration as late as possible.
+### 2. Develop service using Walking skeleton method to enable fast implementation of core logic without waiting for dependencies. 
+1. Postpone any data layer integration as late as possible.
+2. Postpone any service integration (via HTTP or MQ) as late as possible.
 
