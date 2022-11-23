@@ -9,8 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderServiceUT {
 
     private InMemoryOrderProductStockRepository stockRepository = new InMemoryOrderProductStockRepository();
+
     private CartRepository cartRepository = new InMemoryCartRepository();
-    private OrderService orderService = new OrderService(cartRepository, stockRepository);
+
+    private VerifiablePaymentService paymentService = new VerifiablePaymentService();
+
+    private OrderService orderService = new OrderService(cartRepository, stockRepository, paymentService);
 
     @Test
     public void shouldCreateACartWhenPuttingFirstElement() {
@@ -76,6 +80,67 @@ class OrderServiceUT {
         assertEquals("stock1", products.get(0).getName());
         assertEquals("stock2", products.get(1).getName());
         assertEquals("stock3", products.get(2).getName());
+    }
+
+    @Test
+    public void shouldFinalizeOrderAndRequestPayment() {
+        //given
+        addThreeProductsToOrderStockRepository();
+        var cartId = addToCartProductsPresentInOrderStockRepository();
+
+        //when
+        var finalizeOrderRequest = new FinalizeOrderRequest("userId", cartId, "paymentDetails");
+        var orderResult = orderService.orderCart(finalizeOrderRequest);
+
+        //then
+        assertTrue(orderResult.isSuccess());
+        assertNull(orderResult.getMessage());
+
+        //and
+        var order = orderResult.getMadeOrder();
+        assertNotNull(order);
+
+        //and
+        var paymentCommand = paymentService.getLastReceivedCommand();
+        assertEquals(order.getId(), paymentCommand.getOrderId());
+        assertEquals(cartId, paymentCommand.getCartId());
+        assertEquals(order.getUserId(), paymentCommand.getUserId());
+        assertEquals("paymentDetails", paymentCommand.getPaymentDetails());
+
+        //and cart has been updated with order details
+        var cart = orderService.findCart(cartId).get();
+        assertNotNull(cart.getOrder());
+    }
+
+    @Test
+    public void shouldReturnFailedOrderResultIfRequestIsInvalid() {
+        //when
+        var requestWithoutUserId = new FinalizeOrderRequest(null, "cartId", "payment");
+        var result1 = orderService.orderCart(requestWithoutUserId);
+        //then
+        assertFalse(result1.isSuccess());
+
+        //when
+        var requestWithoutCartId = new FinalizeOrderRequest("userId", null, "payment");
+        var result2 = orderService.orderCart(requestWithoutCartId);
+        //then
+        assertFalse(result2.isSuccess());
+
+
+        var requestWithoutPaymentDetails = new FinalizeOrderRequest("userId", "cartId", null);
+        var result3 = orderService.orderCart(requestWithoutPaymentDetails);
+        //then
+        assertFalse(result3.isSuccess());
+    }
+
+    @Test
+    public void shouldReturnedFailedOrderIfNoCartWasFoundForRequest() {
+        //when
+        var finalizeOrderRequest = new FinalizeOrderRequest("userId", "cartId", "paymentDetails");
+        var orderResult = orderService.orderCart(finalizeOrderRequest);
+
+        //then
+        assertFalse(orderResult.isSuccess());
     }
 
     private void addThreeProductsToOrderStockRepository() {

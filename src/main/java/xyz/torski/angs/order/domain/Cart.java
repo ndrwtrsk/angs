@@ -14,6 +14,9 @@ public class Cart {
     @Getter
     private final List<String> products = new ArrayList<>();
 
+    @Getter
+    private Order order;
+
     public Cart addToCart(AddToCartRequest request) {
         products.add(request.getProductStockId());
         return this;
@@ -21,6 +24,14 @@ public class Cart {
 
     public int cartSize() {
         return products.size();
+    }
+
+    public OrderPaymentCommand prepareOrder(FinalizeOrderRequest request, OrderProductStockRepository orderProductStockRepository) {
+        // what if it was already paid for?
+        var calculatedCart = calculateCart(orderProductStockRepository);
+        var order = new Order(request.cartId(), request.userId(), calculatedCart.totalCartPrice());
+        this.order = order;
+        return order.prepareOrderPaymentCommand(request);
     }
 
     public CalculatedCart calculateCart(OrderProductStockRepository repo) {
