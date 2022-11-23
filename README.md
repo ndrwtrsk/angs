@@ -1,6 +1,6 @@
 # Awesome New Games Store
 
-- [Architecture, use cases diagrams](https://lucid.app/lucidchart/96433f6b-1c33-42f8-83c4-fd91e4b9bf1d/edit?invitationId=inv_89fc0898-9909-44bb-8504-364d9ff65afe)
+- [Architecture, use cases diagrams](https://lucid.app/documents/embedded/96433f6b-1c33-42f8-83c4-fd91e4b9bf1d?invitationId=inv_89fc0898-9909-44bb-8504-364d9ff65afe#)
 
 
 ## About tests
