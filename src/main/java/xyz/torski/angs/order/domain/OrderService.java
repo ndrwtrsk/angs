@@ -13,8 +13,12 @@ import static xyz.torski.angs.order.domain.OrderResult.madeOrder;
 public class OrderService {
 
     private final CartRepository repo;
+
     private final OrderProductStockRepository orderProductStockRepository;
+
     private final PaymentService paymentService;
+
+    private final OrderRealizationService orderRealizationService;
 
     public Cart addToCart(AddToCartRequest request) {
         var cart = retrieveCart(request);
@@ -53,8 +57,8 @@ public class OrderService {
         }
 
         var cartId = request.cartId();
-        var maybeCart = repo.findById(cartId);
 
+        var maybeCart = repo.findById(cartId);
         if (maybeCart.isEmpty()) {
             return failedOrder("No cart found.");
         }
@@ -64,5 +68,11 @@ public class OrderService {
         paymentService.requestPayment(orderPaymentCommand);
 
         return madeOrder(cart.getOrder());
+    }
+
+    public void processOrderPaymentResult(OrderPaymentResult result) {
+        repo.findById(result.cartId())
+                .flatMap(cart -> cart.processOrderPaymentResult(result))
+                .ifPresent(orderRealizationService::requestRealization);
     }
 }

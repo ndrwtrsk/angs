@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Cart {
@@ -36,5 +37,16 @@ public class Cart {
 
     public CalculatedCart calculateCart(OrderProductStockRepository repo) {
         return new CalculatedCart(this, repo);
+    }
+
+    public Optional<OrderRealizationCommand> processOrderPaymentResult(OrderPaymentResult result) {
+        if (result.success()) {
+            order.successful();
+            var command = new OrderRealizationCommand(order.getId(), order.getUserId(), products);
+            return Optional.of(command);
+        } else {
+            order.paymentFailed(result.error());
+            return Optional.empty();
+        }
     }
 }

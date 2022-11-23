@@ -1,20 +1,34 @@
 package xyz.torski.angs.order.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import xyz.torski.angs.order.infra.InMemoryCartRepository;
 import xyz.torski.angs.order.infra.InMemoryOrderProductStockRepository;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceUT {
 
-    private InMemoryOrderProductStockRepository stockRepository = new InMemoryOrderProductStockRepository();
+    private InMemoryOrderProductStockRepository stockRepository;
 
-    private CartRepository cartRepository = new InMemoryCartRepository();
+    private CartRepository cartRepository;
 
-    private VerifiablePaymentService paymentService = new VerifiablePaymentService();
+    private VerifiablePaymentService paymentService;
 
-    private OrderService orderService = new OrderService(cartRepository, stockRepository, paymentService);
+    private VerifiableOrderRealizationService orderRealizationService;
+
+    private OrderService orderService;
+
+    @BeforeEach
+    public void resetBefore() {
+        stockRepository = new InMemoryOrderProductStockRepository();
+        cartRepository = new InMemoryCartRepository();
+        paymentService = new VerifiablePaymentService();
+        orderRealizationService = new VerifiableOrderRealizationService();
+        orderService = new OrderService(cartRepository, stockRepository, paymentService, orderRealizationService);
+    }
 
     @Test
     public void shouldCreateACartWhenPuttingFirstElement() {
@@ -126,7 +140,7 @@ class OrderServiceUT {
         //then
         assertFalse(result2.isSuccess());
 
-
+        //when
         var requestWithoutPaymentDetails = new FinalizeOrderRequest("userId", "cartId", null);
         var result3 = orderService.orderCart(requestWithoutPaymentDetails);
         //then
@@ -141,6 +155,53 @@ class OrderServiceUT {
 
         //then
         assertFalse(orderResult.isSuccess());
+    }
+
+    @Test
+    public void shouldNotifyOrderRealizationServiceIfPaymentWasSuccesful() {
+        //given
+        addThreeProductsToOrderStockRepository();
+        var cartId = addToCartProductsPresentInOrderStockRepository();
+
+        var finalizeOrderRequest = new FinalizeOrderRequest("userId", cartId, "paymentDetails");
+        var orderResult = orderService.orderCart(finalizeOrderRequest);
+
+        //when
+        var madeOrder = orderResult.getMadeOrder();
+        var orderId = madeOrder.getId();
+        var orderPaymentResult = new OrderPaymentResult(cartId, orderId, "userId", true, null);
+        orderService.processOrderPaymentResult(orderPaymentResult);
+
+        //then
+        var lastCommand = orderRealizationService.getLastReceivedCommand();
+        assertEquals(orderId, lastCommand.getOrderId());
+        assertEquals("userId", lastCommand.getUserId());
+        assertIterableEquals(List.of("stock1", "stock2", "stock3"), lastCommand.getProductsToDeliver());
+
+        //and
+        assertEquals(Order.OrderStatus.SUCCESFUL, madeOrder.getStatus());
+    }
+
+    @Test
+    public void shouldNotNotifyOrderRealizationService() {
+        //given
+        addThreeProductsToOrderStockRepository();
+        var cartId = addToCartProductsPresentInOrderStockRepository();
+
+        var finalizeOrderRequest = new FinalizeOrderRequest("userId", cartId, "paymentDetails");
+        var orderResult = orderService.orderCart(finalizeOrderRequest);
+
+        //when
+        var madeOrder = orderResult.getMadeOrder();
+        var orderId = madeOrder.getId();
+        var orderPaymentResult = new OrderPaymentResult(cartId, orderId, "userId", false, "some error");
+        orderService.processOrderPaymentResult(orderPaymentResult);
+
+        //then
+        assertNull(orderRealizationService.getLastReceivedCommand());
+
+        //and
+        assertEquals(Order.OrderStatus.PAYMENT_FAILED, madeOrder.getStatus());
     }
 
     private void addThreeProductsToOrderStockRepository() {
