@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import xyz.torski.angs.order.domain.OrderRealizationCommand;
-import xyz.torski.angs.order.domain.OrderRealizationService;
+import xyz.torski.angs.order.domain.realization.OrderRealizationCommand;
+import xyz.torski.angs.order.domain.realization.OrderRealizationService;
 
 @Component
 @RequiredArgsConstructor
@@ -16,7 +16,7 @@ public class OrderRealizationServiceStub implements OrderRealizationService {
 
     @Override
     public void requestRealization(OrderRealizationCommand command) {
-        var orderRealizedEvent = new OrderRealizedEvent(command.getCartId(), command.getOrderId());
+        var orderRealizedEvent = new OrderRealizedEvent(command.cartId(), command.orderId());
         publisher.publishEvent(orderRealizedEvent);
         log.info("Received OrderRealizationCommand {}", command);
     }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class OrderResult {
+public class OrderResult{
      private boolean success;
      private String message;
      private Order madeOrder;

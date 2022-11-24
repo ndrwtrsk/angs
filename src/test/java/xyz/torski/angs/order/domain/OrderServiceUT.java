@@ -175,9 +175,9 @@ class OrderServiceUT {
 
         //then
         var lastCommand = orderRealizationService.getLastReceivedCommand();
-        assertEquals(orderId, lastCommand.getOrderId());
-        assertEquals("userId", lastCommand.getUserId());
-        assertIterableEquals(List.of("stock1", "stock2", "stock3"), lastCommand.getProductsToDeliver());
+        assertEquals(orderId, lastCommand.orderId());
+        assertEquals("userId", lastCommand.userId());
+        assertIterableEquals(List.of("stock1", "stock2", "stock3"), lastCommand.productsToDeliver());
 
         //and
         assertEquals(Order.OrderStatus.SUCCESFUL, madeOrder.getStatus());
