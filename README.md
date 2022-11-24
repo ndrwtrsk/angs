@@ -2,7 +2,20 @@
 
 - [Architecture, use cases diagrams, descriptions, etc...](https://lucid.app/documents/embedded/96433f6b-1c33-42f8-83c4-fd91e4b9bf1d?invitationId=inv_89fc0898-9909-44bb-8504-364d9ff65afe#)
 
-# Disclaimer
+# Description
+This task was developed using [Walking Skeleton](https://wiki.c2.com/?WalkingSkeleton). It implements business logic as requested,
+but integrates with nothing. It's self-contained and it's possible to deploy it even to production environment(though not recommend at this stage)
+and continue with agile developoment of the project and continue gathering feedback and metrics from the behaviour of the service.
+
+I made following simplifications:
+1. Search functionality is most basic at this level. Search controller `/search` simply returns all products. 
+End product would have to utilize something akin to Apache Solr based on Apache Lucene to perform product queries at scale.
+2. There are three separate domains which don't know about one another. 
+See diagrams in [Lucidchart]((https://lucid.app/documents/embedded/96433f6b-1c33-42f8-83c4-fd91e4b9bf1d?invitationId=inv_89fc0898-9909-44bb-8504-364d9ff65afe#)) for how they interact.
+3. These domains communicate(if need be) via spring events, though this can be substituted to any messaging system as developoment progresses.
+4. There is no data layer and all persistence is volatile by implementing InMemory repositories. There is a clear separation of domain and infrastructure layer, 
+so changes to data access should not affect domain. 
+
 If you see an area for improvement there is a good chance that I also saw it but made a decision to leave things as they are. 
 Class names, class interactions, order of invocations, control flow, state machines, you name it. Please make note of such
 occurrences, so we can have a good discussion about them!
@@ -23,7 +36,7 @@ Should result in:
 Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
 ```
 
-Please browse to OrderingProductsFT as it demonstrates the whole required interaction between the caller and the service.
+Please browse to OrderingProductsFunctionalTest as it demonstrates the whole required interaction between the caller and the service.
 
 ## Planned roadmap
 1. Add data layer for stock management domain - simple RDB like MariaDB will suffice.
