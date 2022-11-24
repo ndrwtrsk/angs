@@ -2,10 +2,12 @@ package xyz.torski.angs.stock.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @RequiredArgsConstructor
 public class ProductStockService {
 
@@ -35,16 +37,13 @@ public class ProductStockService {
     }
 
     public ProductStock publish(ProductStockPublishRequest request) {
-        var stock = repository.findById(request.id).orElseThrow();
+        var stock = repository.findById(request.id).orElseThrow(); //fixme
         var event = stock.publish();
         broadcast.broadcastEvent(event);
         return stock;
     }
 
-    @RequiredArgsConstructor
-    @Getter
-    public static class ProductStockPublishRequest {
-        private final String id;
+    public record ProductStockPublishRequest(String id) {
     }
 
 }
