@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OrderServiceUT {
+class OrderServiceUnitTest {
 
     private InMemoryProductRepository stockRepository;
 

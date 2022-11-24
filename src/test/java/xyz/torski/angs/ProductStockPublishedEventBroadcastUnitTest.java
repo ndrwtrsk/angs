@@ -11,7 +11,7 @@ import xyz.torski.angs.stock.domain.ProductStockPublishedEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class ProductStockPublishedEventBroadcastIT {
+public class ProductStockPublishedEventBroadcastUnitTest {
 
     @Autowired
     private ProductStockBroadcast broadcast;

@@ -10,7 +10,7 @@ import xyz.torski.angs.stock.infra.InMemoryProductStockRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProductStockServiceUT {
+class ProductStockServiceUnitTest {
 
     private VerifiableProductStockBroadcast verifiableBroadcast = new VerifiableProductStockBroadcast();
     private InMemoryProductStockRepository repo = new InMemoryProductStockRepository();

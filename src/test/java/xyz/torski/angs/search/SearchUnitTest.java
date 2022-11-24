@@ -7,7 +7,7 @@ import xyz.torski.angs.stock.domain.ProductStockPublishedEvent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SearchUT {
+public class SearchUnitTest {
 
     private final ProductStockIndex index = new ProductStockIndex();
     private final SearchPublishedStockListener listener = new SearchPublishedStockListener(index);

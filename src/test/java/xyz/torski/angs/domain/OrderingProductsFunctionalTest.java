@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.with;
 import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class OrderingProductsFT {
+public class OrderingProductsFunctionalTest {
 
     @LocalServerPort
     private int port;
