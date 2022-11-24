@@ -1,4 +1,4 @@
-package xyz.torski.angs.order.domain;
+package xyz.torski.angs.order.domain.request;
 
 
 import lombok.Getter;

@@ -4,6 +4,8 @@ import lombok.Getter;
 import xyz.torski.angs.order.domain.payment.OrderPaymentCommand;
 import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
 import xyz.torski.angs.order.domain.realization.OrderRealizationCommand;
+import xyz.torski.angs.order.domain.request.AddToCartRequest;
+import xyz.torski.angs.order.domain.request.FinalizeOrderRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +32,14 @@ public class Cart {
         return products.size();
     }
 
-    public OrderPaymentCommand prepareOrder(FinalizeOrderRequest request, OrderProductStockRepository orderProductStockRepository) {
-        // what if it was already paid for?
-        var calculatedCart = calculateCart(orderProductStockRepository);
+    public OrderPaymentCommand prepareOrder(FinalizeOrderRequest request, ProductRepository productRepository) {
+        var calculatedCart = calculateCart(productRepository);
         var order = new Order(request.cartId(), request.userId(), calculatedCart.totalCartPrice());
         this.order = order;
         return order.prepareOrderPaymentCommand(request);
     }
 
-    public CalculatedCart calculateCart(OrderProductStockRepository repo) {
+    public CalculatedCart calculateCart(ProductRepository repo) {
         return new CalculatedCart(this, repo);
     }
 

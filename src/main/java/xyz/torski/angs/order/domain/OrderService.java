@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
 import xyz.torski.angs.order.domain.payment.PaymentService;
 import xyz.torski.angs.order.domain.realization.OrderRealizationService;
+import xyz.torski.angs.order.domain.request.AddToCartRequest;
+import xyz.torski.angs.order.domain.request.FinalizeOrderRequest;
 
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class OrderService {
 
     private final CartRepository repo;
 
-    private final OrderProductStockRepository orderProductStockRepository;
+    private final ProductRepository productRepository;
 
     private final PaymentService paymentService;
 
@@ -25,9 +27,7 @@ public class OrderService {
 
     public Cart addToCart(AddToCartRequest request) {
         var cart = retrieveCart(request);
-        cart.addToCart(request);
-        repo.save(cart);
-        return cart;
+        return repo.save(cart.addToCart(request));
     }
 
     private Cart retrieveCart(AddToCartRequest request) {
@@ -45,7 +45,7 @@ public class OrderService {
 
     public Optional<CalculatedCart> calculateCart(String cartId) {
         return findCart(cartId)
-                .map(cart -> cart.calculateCart(orderProductStockRepository));
+                .map(cart -> cart.calculateCart(productRepository));
     }
 
     public OrderResult orderCart(FinalizeOrderRequest request) {
@@ -67,7 +67,7 @@ public class OrderService {
         }
         var cart = maybeCart.get();
 
-        var orderPaymentCommand = cart.prepareOrder(request, orderProductStockRepository);
+        var orderPaymentCommand = cart.prepareOrder(request, productRepository);
         paymentService.requestPayment(orderPaymentCommand);
 
         return madeOrder(cart.getOrder());

@@ -10,9 +10,9 @@ public class CalculatedCart {
     private final Cart cart;
 
     @Getter
-    private final List<OrderProductStock> cartProducts;
+    private final List<Product> cartProducts;
 
-    public CalculatedCart(Cart cart, OrderProductStockRepository productStockRepository) {
+    public CalculatedCart(Cart cart, ProductRepository productStockRepository) {
         this.cart = cart;
         this.cartProducts = cart.getProducts().stream()
                 .map(productStockRepository::findById)

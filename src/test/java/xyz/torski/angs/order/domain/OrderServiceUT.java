@@ -3,8 +3,10 @@ package xyz.torski.angs.order.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
+import xyz.torski.angs.order.domain.request.AddToCartRequest;
+import xyz.torski.angs.order.domain.request.FinalizeOrderRequest;
 import xyz.torski.angs.order.infra.InMemoryCartRepository;
-import xyz.torski.angs.order.infra.InMemoryOrderProductStockRepository;
+import xyz.torski.angs.order.infra.InMemoryProductRepository;
 
 import java.util.List;
 
@@ -12,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceUT {
 
-    private InMemoryOrderProductStockRepository stockRepository;
+    private InMemoryProductRepository stockRepository;
 
     private CartRepository cartRepository;
 
@@ -24,7 +26,7 @@ class OrderServiceUT {
 
     @BeforeEach
     public void resetBefore() {
-        stockRepository = new InMemoryOrderProductStockRepository();
+        stockRepository = new InMemoryProductRepository();
         cartRepository = new InMemoryCartRepository();
         paymentService = new VerifiablePaymentService();
         orderRealizationService = new VerifiableOrderRealizationService();
@@ -92,9 +94,9 @@ class OrderServiceUT {
 
         //and products are present
         var products = calculatedCart.getCartProducts();
-        assertEquals("stock1", products.get(0).getName());
-        assertEquals("stock2", products.get(1).getName());
-        assertEquals("stock3", products.get(2).getName());
+        assertEquals("stock1", products.get(0).name());
+        assertEquals("stock2", products.get(1).name());
+        assertEquals("stock3", products.get(2).name());
     }
 
     @Test
@@ -228,8 +230,8 @@ class OrderServiceUT {
     }
 
 
-    private OrderProductStock stock(String name) {
-        return new OrderProductStock(name, name);
+    private Product stock(String name) {
+        return new Product(name, name);
     }
 
 }

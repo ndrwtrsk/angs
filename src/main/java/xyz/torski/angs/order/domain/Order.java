@@ -3,6 +3,7 @@ package xyz.torski.angs.order.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import xyz.torski.angs.order.domain.payment.OrderPaymentCommand;
+import xyz.torski.angs.order.domain.request.FinalizeOrderRequest;
 
 import java.util.UUID;
 
