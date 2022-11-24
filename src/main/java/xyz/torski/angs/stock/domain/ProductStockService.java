@@ -36,11 +36,16 @@ public class ProductStockService {
         private final String name;
     }
 
-    public ProductStock publish(ProductStockPublishRequest request) {
-        var stock = repository.findById(request.id).orElseThrow(); //fixme
-        var event = stock.publish();
-        broadcast.broadcastEvent(event);
-        return stock;
+    public Optional<ProductStock> publish(ProductStockPublishRequest request) {
+        var maybeStock = repository.findById(request.id);
+        if (maybeStock.isPresent()) {
+            var stock = maybeStock.get();
+            var event = stock.publish();
+            broadcast.broadcastEvent(event);
+            return Optional.of(stock);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public record ProductStockPublishRequest(String id) {

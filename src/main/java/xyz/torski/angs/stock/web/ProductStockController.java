@@ -33,7 +33,7 @@ public class ProductStockController {
     public ResponseEntity<ProductStockView> updateProductStock(@PathVariable String id,
                                                                @RequestBody UpdateProductStockWebRequest request) {
         log.info("Received updateProductStock {}", request);
-        Optional<ProductStock> maybeProductStock = productStockService.update(request.toDomain());
+        var maybeProductStock = productStockService.update(request.toDomain());
         var mappedResponse = maybeProductStock.map(ProductStockView::viewFromDomain);
         return ResponseEntity.of(mappedResponse);
     }
@@ -42,8 +42,9 @@ public class ProductStockController {
     public ResponseEntity<ProductStockView> publishProductStock(@PathVariable String id) {
         log.info("Received publishProductStock {}", id);
         var request = new ProductStockService.ProductStockPublishRequest(id);
-        ProductStock stock = productStockService.publish(request);
-        return ResponseEntity.ok(viewFromDomain(stock));
+        var stock = productStockService.publish(request);
+        var mappedResponse = stock.map(ProductStockView::viewFromDomain);
+        return ResponseEntity.of(mappedResponse);
     }
 
 }

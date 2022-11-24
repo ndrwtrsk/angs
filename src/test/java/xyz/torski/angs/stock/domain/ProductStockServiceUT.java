@@ -80,7 +80,7 @@ class ProductStockServiceUT {
         service.update(updateRequest);
 
         //when
-        var publishedStock = service.publish(new ProductStockPublishRequest(stockToPublish.getId()));
+        var publishedStock = service.publish(new ProductStockPublishRequest(stockToPublish.getId())).get();
 
         //then
         assertEquals(ProductStock.Status.PUBLISHED, publishedStock.getStatus());
