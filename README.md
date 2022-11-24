@@ -53,7 +53,7 @@ Should result in:
 Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
 ```
 
-Please browse to OrderingProductsFunctionalTest as it demonstrates the whole required interaction between the caller and the service.
+Please browse to [OrderingProductsFunctionalTest](https://github.com/ndrwtrsk/angs/blob/master/src/test/java/xyz/torski/angs/domain/OrderingProductsFunctionalTest.java) as it demonstrates the whole required interaction between the caller and the service.
 
 ## Planned roadmap
 1. Add data layer for stock management domain - simple RDB like MariaDB will suffice.
