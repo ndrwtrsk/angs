@@ -9,6 +9,8 @@
  - *IT - Integration Test
  - *FT - Functional Test
 
+Please browse to OrderingProductsFT as it demonstrates the whole required interaction between the caller and the service.
+
 ## Architecture Decision Record Log
 
 ### 1. Use Spring Boot/Java 17 as platform for application.

@@ -18,6 +18,7 @@ public class OrderingProductsFT {
 
     @Test
     public void createNewProductsPublishThemAndThenMakeAnOrder() {
+        //create and publish stock
         var stock1Id = createProductStock("stock1");
         var stock2Id = createProductStock("stock2");
 
@@ -27,9 +28,12 @@ public class OrderingProductsFT {
         publishStock(stock1Id, "newStockName1");
         publishStock(stock2Id, "newStockName2");
 
+        //search for created and published products
         searchAllProducts("newStockName1", "newStockName2");
 
-        //add products to cart
+        //make an order
+        var cartId = addProductToCart(stock1Id, null);
+        addProductToCart(stock2Id, cartId);
         //view cart contents and status
         //finalize order
         //query order result
@@ -90,6 +94,26 @@ public class OrderingProductsFT {
                 .then()
                 .statusCode(200)
                 .body("products.name", contains(expectedProductNames));
+    }
+
+    @SneakyThrows
+    private String addProductToCart(String stockId, String cartId) {
+        JSONObject object = new JSONObject();
+        object.put("productStockId", stockId);
+        object.put("cartId", cartId);
+
+        String cartIdFromResponse = with().port(port)
+                .body(object.toString())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .put("/cart")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("cartId");
+
+        return cartIdFromResponse;
     }
 
 
