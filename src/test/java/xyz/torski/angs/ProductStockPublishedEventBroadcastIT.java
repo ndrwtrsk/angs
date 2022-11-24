@@ -33,6 +33,6 @@ public class ProductStockPublishedEventBroadcastIT {
 
         //and
         var indexedProductStock = productStockIndex.findAll().get(0);
-        assertEquals("name", indexedProductStock.getName());
+        assertEquals("name", indexedProductStock.name());
     }
 }

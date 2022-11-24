@@ -6,13 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.torski.angs.stock.domain.ProductStock;
 import xyz.torski.angs.stock.domain.ProductStockService;
 
-import java.util.Optional;
 
 import static xyz.torski.angs.stock.web.ProductStockView.viewFromDomain;
 
+/**
+ * TODO Secure this controller using role based policy. Only authenticated and authorized back-office users should
+ * be able to access these endpoints.
+ */
 @RestController
 @RequestMapping("/stock")
 @RequiredArgsConstructor

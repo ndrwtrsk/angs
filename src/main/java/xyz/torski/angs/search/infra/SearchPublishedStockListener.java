@@ -6,6 +6,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import xyz.torski.angs.stock.domain.ProductStockPublishedEvent;
 
+import static xyz.torski.angs.search.infra.IndexedProductStock.fromEvent;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -16,6 +18,6 @@ public class SearchPublishedStockListener {
     @EventListener
     public void onPublishedStock(ProductStockPublishedEvent event) {
         log.info("Accepting ProductStockPublishedEvent");
-        productStockIndex.acceptAndIndexProductStock(new IndexableProductStock(event));
+        productStockIndex.acceptAndIndexProductStock(fromEvent(event));
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
 @Component
 public class ProductStockIndex { // todo think about renaming?
 
-    private final List<IndexableProductStock> stock = new ArrayList<>();
+    private final List<IndexedProductStock> stock = new ArrayList<>();
 
-    public void acceptAndIndexProductStock(IndexableProductStock productStock) {
+    public void acceptAndIndexProductStock(IndexedProductStock productStock) {
         stock.add(productStock);
     }
 
-    public List<IndexableProductStock> findAll() {
+    public List<IndexedProductStock> findAll() {
         return stock;
     }
 

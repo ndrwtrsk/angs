@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.with;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class OrderingProductsFT {
@@ -27,7 +27,7 @@ public class OrderingProductsFT {
         publishStock(stock1Id, "newStockName1");
         publishStock(stock2Id, "newStockName2");
 
-
+        searchAllProducts("newStockName1", "newStockName2");
 
         //add products to cart
         //view cart contents and status
@@ -64,7 +64,7 @@ public class OrderingProductsFT {
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .when()
-                .patch("/stock")
+                .patch("/stock/"+stockId)
                 .then()
                 .statusCode(200);
     }
@@ -79,6 +79,17 @@ public class OrderingProductsFT {
                 .then()
                 .statusCode(200)
                 .body("name", equalTo(newExpectedName));
+    }
+
+    @SneakyThrows
+    private void searchAllProducts(String... expectedProductNames) {
+        with().port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/search")
+                .then()
+                .statusCode(200)
+                .body("products.name", contains(expectedProductNames));
     }
 
 

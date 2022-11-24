@@ -22,7 +22,7 @@ public class SearchUT {
 
         //then
         var indexedStock = index.findAll().get(0);
-        assertEquals("id", indexedStock.getId());
-        assertEquals("name", indexedStock.getName());
+        assertEquals("id", indexedStock.id());
+        assertEquals("name", indexedStock.name());
     }
 }
