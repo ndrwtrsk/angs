@@ -1,4 +1,4 @@
-package xyz.torski.angs.order.web;
+package xyz.torski.angs.order.web.result;
 
 import xyz.torski.angs.order.domain.OrderResult;
 

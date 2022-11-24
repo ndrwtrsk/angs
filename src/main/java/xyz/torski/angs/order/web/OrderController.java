@@ -7,6 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.torski.angs.order.domain.OrderService;
+import xyz.torski.angs.order.web.request.AddToCartWebRequest;
+import xyz.torski.angs.order.web.request.FinalizeOrderWebRequest;
+import xyz.torski.angs.order.web.result.CalculatedCartView;
+import xyz.torski.angs.order.web.result.OrderResultView;
 
 @RestController
 @RequestMapping(path = "/cart")
