@@ -17,8 +17,9 @@ See diagrams in [Lucidchart]((https://lucid.app/documents/embedded/96433f6b-1c33
 so changes to data access should not affect domain. 
 
 If you see an area for improvement there is a good chance that I also saw it but made a decision to leave things as they are. 
-Class names, class interactions, order of invocations, control flow, state machines, you name it. Please make note of such
-occurrences, so we can have a good discussion about them!
+Class names, class interactions, order of invocations, control flow, state machines or validating data - you name it. 
+To address them all would be too time-consuming for this task in my assessment.
+Please make note of such occurrences, so we can have a good discussion about them!
 
 ## About tests
 
@@ -50,6 +51,7 @@ Please browse to OrderingProductsFunctionalTest as it demonstrates the whole req
 
 ## Improvement ideas
 1. Have the domain services return data objects, not domain objects, so that only services and domain logic would be able to perform any operations on domain objects.
+2. Order/Cart domain - these two entities seem to permeate one another. Cart is necessary for Order to be created, but it's order that would widely known within other bounded contexts.
 
 ## Architecture Decision Record Log
 
