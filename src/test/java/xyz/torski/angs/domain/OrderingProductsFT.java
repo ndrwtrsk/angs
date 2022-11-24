@@ -37,7 +37,7 @@ public class OrderingProductsFT {
 
         viewCartContents(cartId, stock1Id, stock2Id);
 
-        //finalize order
+        finalizeOrder(cartId);
         //query order result
     }
 
@@ -130,5 +130,23 @@ public class OrderingProductsFT {
                 .body("products.id", contains(expectedProductIds));
     }
 
+    @SneakyThrows
+    private void finalizeOrder(String cartId) {
+        JSONObject object = new JSONObject();
+        object.put("userId", "userId");
+        object.put("cartId", cartId);
+        object.put("paymentDetails", "somePaymentDetails");
+
+        with().port(port)
+                .body(object.toString())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .put("/cart/"+cartId+"/finalize")
+                .then()
+                .statusCode(202)
+                .body("success", equalTo(true))
+                .body("message", blankOrNullString());
+    }
 
 }

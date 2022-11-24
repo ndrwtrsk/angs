@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.torski.angs.order.domain.OrderService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping(path = "/cart")
 @RequiredArgsConstructor
@@ -33,9 +31,12 @@ public class OrderController {
         return ResponseEntity.of(maybeCart);
     }
 
-    @PostMapping(path = "/{cartId}/finalize")
-    public void finalizeOrder(@PathVariable String cartId) {
-
+    @PutMapping(path = "/{cartId}/finalize", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public OrderResultView finalizeOrder(@PathVariable String cartId,
+                                         @RequestBody FinalizeOrderWebRequest request) {
+        var orderResult = orderService.orderCart(request.toDomain());
+        return OrderResultView.fromDomain(orderResult);
     }
 
 }
