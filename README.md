@@ -21,6 +21,22 @@ Class names, class interactions, order of invocations, control flow, state machi
 To address them all would be too time-consuming for this task in my assessment.
 Please make note of such occurrences, so we can have a good discussion about them!
 
+## Tech
+
+- Spring Boot for application itself
+- Maria DB for data layer
+- NoSQL for Cart Data layer (I've seen such cassandra use in ecommerce)
+- Rabbit MQ (AMQP) for messaging needs
+- Docker for containerization
+- Kubernetes & Kustomize as container orchestration and customization
+- AWS as network and deployment environment
+- Micrometer for gathering metrics of application runtime
+- Grafana for visualization (or AWS equivalent)
+- ELK stack for logs (or AWS equivalent)
+- Prometheus for Alerting/visualization
+- [Judge D](https://github.com/HLTech/judge-d) for contract testing
+- Gatling for performance tests 
+
 ## About tests
 
 To execute tests:
@@ -48,6 +64,7 @@ Please browse to OrderingProductsFunctionalTest as it demonstrates the whole req
 6. Add micrometer for monitoring purposes.
 7. Integrate Payment Service and extend current implementation of finalizing orders.
 8. Integrate Order Realization Service to actually deliver the artifacts to customer.
+9. Dockerize jar.
 
 ## Improvement ideas
 1. Have the domain services return data objects, not domain objects, so that only services and domain logic would be able to perform any operations on domain objects.
