@@ -45,8 +45,8 @@ class ProductStockUT {
         assertEquals("publishedName", stock.getName());
         assertEquals(ProductStock.Status.PUBLISHED, stock.getStatus());
 
-        assertEquals(stock.getId(), publishedEvent.getId());
-        assertEquals(stock.getName(), publishedEvent.getName());
+        assertEquals(stock.getId(), publishedEvent.id());
+        assertEquals(stock.getName(), publishedEvent.name());
     }
 
 

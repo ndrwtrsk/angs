@@ -42,11 +42,20 @@ public class Cart {
     public Optional<OrderRealizationCommand> processOrderPaymentResult(OrderPaymentResult result) {
         if (result.success()) {
             order.successful();
-            var command = new OrderRealizationCommand(order.getId(), order.getUserId(), products);
+            var command = new OrderRealizationCommand(id, order.getId(), order.getUserId(), products);
             return Optional.of(command);
         } else {
             order.paymentFailed(result.error());
             return Optional.empty();
         }
+    }
+
+    public void orderRealized() {
+        this.order.successful();
+    }
+
+    public Order.OrderStatus getStatus() {
+        if (order == null) return null;
+        return order.getStatus();
     }
 }

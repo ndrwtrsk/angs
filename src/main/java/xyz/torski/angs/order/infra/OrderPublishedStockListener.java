@@ -17,7 +17,7 @@ public class OrderPublishedStockListener { // todo think about renaming?
     @EventListener
     public void onPublishedStock(ProductStockPublishedEvent event) {
         log.info("Accepting ProductStockPublishedEvent");
-        stockRepository.add(new OrderProductStock(event.getId(), event.getName()));
+        stockRepository.add(new OrderProductStock(event.id(), event.name()));
     }
 
 }

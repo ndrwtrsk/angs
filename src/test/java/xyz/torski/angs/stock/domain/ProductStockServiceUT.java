@@ -88,8 +88,8 @@ class ProductStockServiceUT {
 
         //and even was broadcast
         var lastPublishedEvent = verifiableBroadcast.lastEvent().get();
-        assertEquals(publishedStock.getId(), lastPublishedEvent.getId());
-        assertEquals(publishedStock.getName(), lastPublishedEvent.getName());
+        assertEquals(publishedStock.getId(), lastPublishedEvent.id());
+        assertEquals(publishedStock.getName(), lastPublishedEvent.name());
 
     }
 

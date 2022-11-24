@@ -11,6 +11,7 @@ import java.util.Objects;
 @Getter
 @ToString
 public final class OrderRealizationCommand {
+    private final String cartId;
     private final String orderId;
     private final String userId;
     private final List<String> productsToDeliver;

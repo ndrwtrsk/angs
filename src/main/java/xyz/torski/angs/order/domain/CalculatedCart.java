@@ -25,6 +25,10 @@ public class CalculatedCart {
         return cart.getId();
     }
 
+    public Order.OrderStatus getOrderStatus() {
+        return cart.getStatus();
+    }
+
     public int cartSize() {
         return cartProducts.size();
     }

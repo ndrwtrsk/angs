@@ -75,4 +75,9 @@ public class OrderService {
                 .flatMap(cart -> cart.processOrderPaymentResult(result))
                 .ifPresent(orderRealizationService::requestRealization);
     }
+
+    public void processOrderRealizationEvent(String cartId) {
+        repo.findById(cartId)
+                .ifPresent(Cart::orderRealized);
+    }
 }

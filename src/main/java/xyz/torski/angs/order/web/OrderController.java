@@ -35,6 +35,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public OrderResultView finalizeOrder(@PathVariable String cartId,
                                          @RequestBody FinalizeOrderWebRequest request) {
+        log.info("Received finalizeOrder request: {}", request);
         var orderResult = orderService.orderCart(request.toDomain());
         return OrderResultView.fromDomain(orderResult);
     }

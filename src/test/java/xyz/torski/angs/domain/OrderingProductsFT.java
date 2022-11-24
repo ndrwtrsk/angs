@@ -38,7 +38,10 @@ public class OrderingProductsFT {
         viewCartContents(cartId, stock1Id, stock2Id);
 
         finalizeOrder(cartId);
-        //query order result
+
+        waitForEventsToComeThrough();
+
+        verifyOrderHasBeenRealized(cartId);
     }
 
     @SneakyThrows
@@ -149,4 +152,20 @@ public class OrderingProductsFT {
                 .body("message", blankOrNullString());
     }
 
+    @SneakyThrows
+    private void waitForEventsToComeThrough() {
+        Thread.sleep(100);
+    }
+
+    @SneakyThrows
+    private void verifyOrderHasBeenRealized(String cartId) {
+        with().port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/cart/"+cartId)
+                .then()
+                .statusCode(200)
+                .body("cartId", equalTo(cartId))
+                .body("orderStatus", equalTo("SUCCESFUL"));
+    }
 }
