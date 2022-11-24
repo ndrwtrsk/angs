@@ -34,7 +34,9 @@ public class OrderingProductsFT {
         //make an order
         var cartId = addProductToCart(stock1Id, null);
         addProductToCart(stock2Id, cartId);
-        //view cart contents and status
+
+        viewCartContents(cartId, stock1Id, stock2Id);
+
         //finalize order
         //query order result
     }
@@ -114,6 +116,18 @@ public class OrderingProductsFT {
                 .path("cartId");
 
         return cartIdFromResponse;
+    }
+
+    private void viewCartContents(String cartId, String... expectedProductIds) {
+        with().port(port)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/cart/"+cartId)
+                .then()
+                .statusCode(200)
+                .body("cartId", equalTo(cartId))
+                .body("totalPrice", equalTo(0))
+                .body("products.id", contains(expectedProductIds));
     }
 
 

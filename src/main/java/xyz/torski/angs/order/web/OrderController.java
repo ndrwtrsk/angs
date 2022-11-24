@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.torski.angs.order.domain.OrderService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/cart")
@@ -23,9 +26,11 @@ public class OrderController {
         return new CartView(cart);
     }
 
-    @GetMapping(path = "/{cartId}")
-    public void findCart(@PathVariable String cartId) {
-
+    @GetMapping(path = "/{cartId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CalculatedCartView> findCart(@PathVariable String cartId) {
+        log.info("Received findCart request: {}", cartId);
+        var maybeCart = orderService.calculateCart(cartId).map(CalculatedCartView::fromCalculatedCart);
+        return ResponseEntity.of(maybeCart);
     }
 
     @PostMapping(path = "/{cartId}/finalize")
