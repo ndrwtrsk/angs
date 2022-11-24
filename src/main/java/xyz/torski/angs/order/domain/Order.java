@@ -2,6 +2,7 @@ package xyz.torski.angs.order.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import xyz.torski.angs.order.domain.payment.OrderPaymentCommand;
 
 import java.util.UUID;
 

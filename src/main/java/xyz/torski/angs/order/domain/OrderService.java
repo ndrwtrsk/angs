@@ -2,6 +2,8 @@ package xyz.torski.angs.order.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
+import xyz.torski.angs.order.domain.payment.PaymentService;
 
 import java.util.Optional;
 

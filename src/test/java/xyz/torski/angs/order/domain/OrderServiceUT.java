@@ -2,6 +2,7 @@ package xyz.torski.angs.order.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
 import xyz.torski.angs.order.infra.InMemoryCartRepository;
 import xyz.torski.angs.order.infra.InMemoryOrderProductStockRepository;
 
@@ -116,10 +117,10 @@ class OrderServiceUT {
 
         //and
         var paymentCommand = paymentService.getLastReceivedCommand();
-        assertEquals(order.getId(), paymentCommand.getOrderId());
-        assertEquals(cartId, paymentCommand.getCartId());
-        assertEquals(order.getUserId(), paymentCommand.getUserId());
-        assertEquals("paymentDetails", paymentCommand.getPaymentDetails());
+        assertEquals(order.getId(), paymentCommand.orderId());
+        assertEquals(cartId, paymentCommand.cartId());
+        assertEquals(order.getUserId(), paymentCommand.userId());
+        assertEquals("paymentDetails", paymentCommand.paymentDetails());
 
         //and cart has been updated with order details
         var cart = orderService.findCart(cartId).get();

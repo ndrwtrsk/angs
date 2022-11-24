@@ -4,20 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import xyz.torski.angs.order.domain.Order;
-import xyz.torski.angs.order.domain.OrderPaymentCommand;
-import xyz.torski.angs.order.domain.PaymentService;
+import xyz.torski.angs.order.domain.payment.OrderPaymentCommand;
+import xyz.torski.angs.order.domain.payment.PaymentService;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentServiceStub implements PaymentService {
+class PaymentServiceStub implements PaymentService {
 
     private final ApplicationEventPublisher publisher;
 
     @Override
     public void requestPayment(OrderPaymentCommand command) {
         log.info("OrderPaymentCommand received {}", command);
-        publisher.publishEvent(new OrderPaymentEvent(command.getCartId(), command.getOrderId(), command.getUserId(), true, null));
+        publisher.publishEvent(new OrderPaymentEvent(command.cartId(), command.orderId(), command.userId(), true, null));
     }
 }

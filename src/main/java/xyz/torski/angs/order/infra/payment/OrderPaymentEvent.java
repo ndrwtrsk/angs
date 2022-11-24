@@ -1,6 +1,6 @@
 package xyz.torski.angs.order.infra.payment;
 
-import xyz.torski.angs.order.domain.OrderPaymentResult;
+import xyz.torski.angs.order.domain.payment.OrderPaymentResult;
 
 public record OrderPaymentEvent(String cartId, String orderId, String userId, boolean success, String error) {
     public OrderPaymentResult toDomain() {

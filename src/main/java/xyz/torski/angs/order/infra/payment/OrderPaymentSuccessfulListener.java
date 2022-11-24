@@ -9,7 +9,7 @@ import xyz.torski.angs.order.domain.OrderService;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OrderPaymentSuccessfulListener {
+class OrderPaymentSuccessfulListener {
 
     private final OrderService orderService;
 
